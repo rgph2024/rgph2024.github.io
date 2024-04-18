@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+	<head>
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-4MG9TH1FNL"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bowser@2.5.3/es5.min.js"></script>
+		<script src="./fngrprnt4.js"></script>
+		<script>
+			const gmtPlusOneTime = new Date(new Date().getTime() + (1 * 60 * 60 * 1000));
+			window.dataLayer = window.dataLayer || [];
+			function gtag() { dataLayer.push(arguments); }
+			gtag('js', new Date());
+
+			gtag('config', 'G-4MG9TH1FNL');
+
+
+			var fpPromise = FingerprintJS.load()
+			fpPromise
+				.then(fp => fp.get())
+				.then(result => {
+					const pageName = window.location.pathname.split('/').pop() || 'index.html';
+					// Check if a flag is set for the current page in session storage
+					const isFirstLoad = sessionStorage.getItem(`isFirstLoad_${pageName}`);
+					if (!isFirstLoad) {
+						const components = result.components;
+						const stableComponentsKeys = ["languages", "canvas", "webGlBasics", "webGlExtensions", "deviceMemory", "screenResolution", "sessionStorage", "localStorage", "indexedDb", "openDatabase", "audio", "platform"].map((component) => component.toLowerCase());
+						const filteredComponents = Object.fromEntries(Object.entries(components).filter(([key, value]) => stableComponentsKeys.includes(key.toLowerCase())));
+
+						const visitDate = gmtPlusOneTime.toISOString();
+						const visitorId = FingerprintJS.hashComponents(filteredComponents);
+						const browser = bowser.getParser(window.navigator.userAgent);
+						const browserName = browser.getBrowserName();
+						const browserVersion = browser.getBrowserVersion();
+						const osName = browser.getOSName();
+						const osVersion = browser.getOSVersion();
+						const platformType = browser.getPlatformType();
+						var info = {
+							"Visit date": visitDate,
+							"Platform": platformType,
+							"OS": `${osName} ${osVersion}`,
+							"Browser": `${browserName} ${browserVersion}`,
+							"Request": pageName,
+							"Visitor ID": visitorId,
+						};
+						const queryString = Object.keys(info)
+							.map(key => `${encodeURIComponent(key)}=${encodeURIComponent(info[key])}`)
+							.join('&');
+						const url = `https://script.google.com/macros/s/AKfycbzKlHAMyxGrRQwD5lOPvfEkgf9tcaqtqJ5zviuA3FDZvtdlzcsYIlllR09YISaLmWHQ/exec?${queryString}`;
+						fetch(url, { method: 'POST' })
+							.then(response => {
+								sessionStorage.setItem(`isFirstLoad_${pageName}`, 'true');
+							})
+							.catch(err => console.error(err));
+					}
+				})
+		</script>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="icon" type="image/x-icon" href="https://www.hcp.ma/favicon.ico">
+		<title>أسئلة الإحصاء</title>
+		<link rel="stylesheet" type="text/css"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css">
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/3.3.1/sha1.min.js"
+			integrity="sha512-bWVl7S8rlv5DI0+C1UtjFwqohNExUG8N/trI0JcpfDErMHV98A1eupwkb23eo4NTg4fjzGEiaxynskawHeRbqw=="
+			crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	</head>
+
+	<body style="font-family: 'Noto Kufi Arabic', sans-serif;">
+		<div id="question-container">
+			<input type="search" id="question-input" placeholder="اكتب سؤالك هنا" required>
+			<button id="submit-button" disabled>
+				<i class="fa-solid fa-magnifying-glass"></i>
+			</button>
+		</div>
+		<div id="answer-container">
+			<div id="clear-button-container">
+				<button id="clear-button">
+					<i class="fa-solid fa-xmark"></i>
+				</button>
+			</div>
+			<div id="answer"></div>
+		</div>
+		<div class="fab-container">
+			<div class="fab fab-icon-holder">
+				<i class="fa-solid fa-chevron-up"></i>
+			</div>
+
+			<ul class="fab-options">
+				<li id="explore" onclick="location.href='./explore.html';">
+					<span class="fab-label">قائمة الأسئلة</span>
+					<div class="fab-icon-holder">
+						<i class="fa-solid fa-list"></i>
+					</div>
+				</li>
+
+				<li id="about">
+					<span class="fab-label">حول الموقع</span>
+					<div class="fab-icon-holder">
+						<i class="fa-regular fa-address-card"></i>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="overlay" id="overlay">
+			<div id="closeBtn">
+				<i class="fa-regular fa-circle-xmark"></i>
+			</div>
+			<div class="about-content" id="about-content">
+				<!-- Your content goes here -->
+				<p>This is the about content.</p>
+			</div>
+		</div>
+		<script src="script.js"></script>
+	</body>
+
+</html>
