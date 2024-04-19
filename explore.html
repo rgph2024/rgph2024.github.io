@@ -94,19 +94,6 @@
                 text-align: right;
             }
 
-            .multisteps_form .question_number {
-                background: #22b39c;
-                border: 1px solid #eee;
-                border-radius: 30px;
-                color: #fff;
-                font-size: 15px;
-                /* margin: -6.5rem auto 2rem; */
-                padding: 5px 10px;
-                position: relative;
-                text-align: center;
-                width: 100px
-            }
-
             .multisteps_form .question-option {
                 font-weight: bold;
                 /* Bold text */
@@ -155,7 +142,6 @@
                 display: flex !important;
             }
 
-
             .slide-controls {
                 width: 100%;
                 height: 100%;
@@ -167,7 +153,6 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
             }
-
 
             .button-container {
                 width: 4.5%;
@@ -249,6 +234,56 @@
                 left: 2.5px;
                 /* Adjust left margin as needed */
             }
+
+            .multisteps_form .question_number {
+                background: #22b39c;
+                border: 1px solid #eee;
+                border-radius: 30px;
+                color: #fff;
+                font-size: 15px;
+                /* margin: -6.5rem auto 2rem; */
+                padding: 5px 10px;
+                position: absolute;
+                text-align: center;
+                justify-content: center;
+                display: flex;
+                top: 0;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-weight: bold;
+            }
+
+            .badge {
+                position: absolute;
+                font-weight: bold;
+                justify-content: center;
+                display: flex;
+                top: 5px;
+                /* Adjust top margin as needed */
+                left: 2.5px;
+                /* Adjust left margin as needed */
+            }
+
+            .breadcrumb {
+                position: absolute;
+                font-weight: bold;
+                justify-content: center;
+                display: flex;
+                bottom: 3px;
+                /* Adjust top margin as needed */
+                right: 5px;
+                direction: rtl;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+
+            .breadcrumb span {
+                margin-left: 2.5px;
+                margin-right: 2.5px;
+                /* Adjust margin for spacing between elements */
+                color: rgba(0, 0, 0, 0.2);
+                /* Transparent text color */
+            }
         </style>
     </head>
 
@@ -309,14 +344,21 @@
                             var badge = "Approved" in val ? verified : unverified;
                             var options = val["Options"];
                             var answers = val["Answer"];
+                            var quizID = val["QuizOfOrigin"];
                             var choices = '';
                             options.forEach(function (option, j) {
                                 choices += `<div class="question-option rtl" isCorrect="${answers.includes(j + 1)}"> <p class="unselectable">${option}</p>${answers.includes(j + 1) ? correct : wrong} </div>`;
                             });
-
-                            var question = `<div class="multisteps_form text-center"> <div class="quiz-card">${badge}<span class="question_number unselectable">سؤال ${keys.length - i}</span> <h3 class="question_title text-center unselectable rtl">${qst}</h3> </div>${choices}</div>`;
-
-                            slider.insertAdjacentHTML('beforeend', question);
+                            var sections = [quizID];
+                            var breadcrumb = '';
+                            sections.forEach((section, i) => {
+                                breadcrumb += `<span>${section}</span>`;
+                                if (i !== [quizID].length - 1) {
+                                    breadcrumb += `<span><i class="fa-solid fa-chevron-left"></i></span>`;
+                                }
+                            });
+                            var question = `<div class="multisteps_form text-center"> <div class="quiz-card"><div class="accuracy-background"><div class="search-accuracy" ${accuracyStyle}>${(results[key] * 100).toFixed(1)}% تطابق</div>${(results[key] * 100).toFixed(1)}% تطابق</div> ${badge} <h3 class="question_title text-center unselectable rtl">${qst}</h3> <div class="breadcrumb">${breadcrumb}</div> </div>${choices}</div>`;
+                            answerDiv.insertAdjacentHTML('beforeend', question);
                         });
 
                         var sliderInstance = tns({

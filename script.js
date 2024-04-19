@@ -9,7 +9,6 @@ const aboutButton = document.getElementById('about');
 const overlay = document.getElementById("overlay");
 const closeBtn = document.getElementById('closeBtn');
 const aboutContent = document.getElementById('about-content');
-const pattern = /[^\u0621-\u064AA-z\d]+/gu;
 var archive, keys;
 
 
@@ -18,8 +17,10 @@ function sha1(input) {
     shaObj.update(input);
     return shaObj.getHash("HEX");
 }
-function normalizeStr(str) {
-    return str.replace("أ", "ا").replace("إ", "ا").replace("آ", "ا").replace("ؤ", "و").replace("", "").replace("ـ", "").replace(pattern, "");
+function normalizeStr(str, keepWhiteSpaces = false) {
+    str = str.replace(/[ \t\n\r]+/g, ' ');
+    const pattern = keepWhiteSpaces ? /[^\u0621-\u064AA-z\d]+/gu : /[^\u0621-\u064AA-z\d\s]+/gu;
+    return str.replace("أ", "ا").replace("إ", "ا").replace("آ", "ا").replace("ؤ", "و").replace("ـ", "").replace(pattern, "");
 }
 
 questionInput.addEventListener('input', function () {
@@ -36,6 +37,10 @@ function handleAnswerSubmission() {
     if (typeof archive !== 'undefined') {
         showAnswer();
     }
+}
+
+function breadCrumbItems(quizID) {
+    
 }
 
 function showAnswer() {
@@ -58,12 +63,21 @@ function showAnswer() {
         var badge = "Approved" in val ? verified : unverified;
         var options = val["Options"];
         var answers = val["Answer"];
+        var quizID = val["QuizOfOrigin"];
         var choices = '';
         options.forEach(function (option, j) {
             choices += `<div class="question-option rtl" isCorrect="${answers.includes(j + 1)}"> <p class="unselectable">${option}</p>${answers.includes(j + 1) ? correct : wrong} </div>`;
         });
         var accuracyStyle = results[key] > .7 ? ` style="color:#fff;background-color: rgba(85, 207, 15, ${results[key]});"` : '';
-        var question = `<div class="multisteps_form text-center"> <div class="quiz-card"><div class="accuracy-background"><div class="search-accuracy" ${accuracyStyle}>${(results[key] * 100).toFixed(1)}% تطابق</div>${(results[key] * 100).toFixed(1)}% تطابق</div> ${badge} <h3 class="question_title text-center unselectable rtl">${qst}</h3> </div>${choices}</div>`;
+        var sections = [quizID];
+        var breadcrumb = '';
+        sections.forEach((section, i) => {
+            breadcrumb += `<span>${section}</span>`;
+            if (i !== [quizID].length - 1) {
+                breadcrumb += `<span><i class="fa-solid fa-chevron-left"></i></span>`;
+            }
+        });
+        var question = `<div class="multisteps_form text-center"> <div class="quiz-card"><div class="accuracy-background"><div class="search-accuracy" ${accuracyStyle}>${(results[key] * 100).toFixed(1)}% تطابق</div>${(results[key] * 100).toFixed(1)}% تطابق</div> ${badge} <h3 class="question_title text-center unselectable rtl">${qst}</h3> <div class="breadcrumb">${breadcrumb}</div> </div>${choices}</div>`;
         if (i + 1 < lst.length) {
             question += `<div class="separator"> <div class="gradient-divider"></div> </div>`;
         }
@@ -193,6 +207,23 @@ const verified = `<span class="badge"><svg xmlns="http://www.w3.org/2000/svg" he
 const wrong = `<span class="text-danger d-flex align-items-center"> <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="2.5em" width="2.5em" xmlns="http://www.w3.org/2000/svg"> <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 10.5858L14.8284 7.75736L16.2426 9.17157L13.4142 12L16.2426 14.8284L14.8284 16.2426L12 13.4142L9.17157 16.2426L7.75736 14.8284L10.5858 12L7.75736 9.17157L9.17157 7.75736L12 10.5858Z"> </path> </svg> </span>`;
 const unverified = '<span class="badge"><svg viewBox="0 0 122.88 116.87" xmlns="http://www.w3.org/2000/svg"  height="2.7em" width="2.7em"><g data-name="Layer 2"><path fill="#842029" d="M93.78,47.52l-7-5.4a3.13,3.13,0,0,1-1-3.68l3.38-8.18A3.13,3.13,0,0,0,86.67,26L77.89,24.8a3.12,3.12,0,0,1-2.69-2.69L74,13.33a3.13,3.13,0,0,0-4.3-2.48l-8.18,3.38a3.13,3.13,0,0,1-3.68-1l-5.4-7a3.13,3.13,0,0,0-5,0l-5.4,7a3.13,3.13,0,0,1-3.68,1l-8.18-3.38A3.13,3.13,0,0,0,26,13.33L24.8,22.11a3.12,3.12,0,0,1-2.69,2.69L13.33,26a3.13,3.13,0,0,0-2.48,4.3l3.38,8.18a3.13,3.13,0,0,1-1,3.68l-7,5.4a3.13,3.13,0,0,0,0,5l7,5.4a3.13,3.13,0,0,1,1,3.68l-3.38,8.18A3.13,3.13,0,0,0,13.33,74l8.78,1.16a3.12,3.12,0,0,1,2.69,2.69L26,86.67a3.13,3.13,0,0,0,4.3,2.48l8.18-3.38a3.13,3.13,0,0,1,3.68,1l5.4,7a3.13,3.13,0,0,0,5,0l5.4-7a3.13,3.13,0,0,1,3.68-1l8.18,3.38A3.13,3.13,0,0,0,74,86.67l1.16-8.78a3.12,3.12,0,0,1,2.69-2.69L86.67,74a3.13,3.13,0,0,0,2.48-4.3l-3.38-8.18a3.13,3.13,0,0,1,1-3.68l7-5.4A3.13,3.13,0,0,0,93.78,47.52ZM50,76.7a3.63,3.63,0,1,1,3.62-3.63A3.63,3.63,0,0,1,50,76.7Zm3.62-14.19a3.62,3.62,0,1,1-7.24,0V26.93a3.62,3.62,0,1,1,7.24,0Z"/></g></svg> <span style="margin-right: 5px; color: #842029;">أجوبة غير موثوقة</span></span>';
 
+archive = {
+    "7819351b3638af23abc59ddae3811a3170f1643a": {
+        "Question": "يتم التعرف على حدود القطع بالوسط القروي:",
+        "Options": [
+            "يوم فاتح شتنبر 2024",
+            "خلال يومي 30 و 31 غشت 2024",
+            "بالموازاة مع تقدم عملية إحصاء الأسر والمساكن"
+        ],
+        "Answer": [
+            2
+        ],
+        "QuizOfOrigin": "65d5cfc2d7e6eb49884a5b2c",
+        "Approved": true,
+        "questionHash": "546dc33319170d1af46972984e4ece4c1de415c6"
+    }
+}
+
 if (typeof archive === 'undefined') {
     fetch('dataBase.json')
         .then(response => response.json())
@@ -207,10 +238,114 @@ if (typeof archive === 'undefined') {
         .catch(error => console.error('Error loading JSON file:', error));
 }
 
-function search(query, resultsNbr = 10) {
+function jaro_distance(s1, s2) {
+    // If the strings are equal
+    if (s1 == s2)
+        return 1.0;
 
-    query = normalizeStr(query);
-    const hash = sha1(query);
+    // Length of two strings
+    let len1 = s1.length, len2 = s2.length;
+
+    if (len1 == 0 || len2 == 0)
+        return 0.0;
+
+    // Maximum distance upto which matching
+    // is allowed
+    let max_dist = Math.floor(Math.max(len1, len2) / 2) - 1;
+
+    // Count of matches
+    let match = 0;
+
+    // Hash for matches
+    let hash_s1 = new Array(s1.length);
+    hash_s1.fill(0);
+    let hash_s2 = new Array(s2.length);
+    hash_s2.fill(0);
+
+    // Traverse through the first string
+    for (let i = 0; i < len1; i++) {
+
+        // Check if there is any matches
+        for (let j = Math.max(0, i - max_dist);
+            j < Math.min(len2, i + max_dist + 1); j++)
+
+            // If there is a match
+            if (s1[i] == s2[j] &&
+                hash_s2[j] == 0) {
+                hash_s1[i] = 1;
+                hash_s2[j] = 1;
+                match++;
+                break;
+            }
+    }
+
+    // If there is no match
+    if (match == 0)
+        return 0.0;
+
+    // Number of transpositions
+    let t = 0;
+
+    let point = 0;
+
+    // Count number of occurrences
+    // where two characters match but
+    // there is a third matched character
+    // in between the indices
+    for (let i = 0; i < len1; i++)
+        if (hash_s1[i] == 1) {
+
+            // Find the next matched character
+            // in second string
+            while (hash_s2[point] == 0)
+                point++;
+
+            if (s1[i] != s2[point++])
+                t++;
+        }
+    t /= 2;
+
+    // Return the Jaro Similarity
+    return ((match) / (len1)
+        + (match) / (len2)
+        + (match - t) / (match))
+        / 3.0;
+}
+
+// Jaro Winkler Similarity
+function jaro_Winkler(s1, s2) {
+    let jaro_dist = jaro_distance(s1, s2);
+
+    // If the jaro Similarity is above a threshold
+    if (jaro_dist > 0.7) {
+
+        // Find the length of common prefix
+        let prefix = 0;
+
+        for (let i = 0; i < Math.min(s1.length, s2.length); i++) {
+
+            // If the characters match
+            if (s1[i] == s2[i])
+                prefix++;
+
+            // Else break
+            else
+                break;
+        }
+
+        // Maximum of 4 characters are allowed in prefix
+        prefix = Math.min(4, prefix);
+
+        // Calculate jaro winkler Similarity
+        jaro_dist += 0.1 * prefix * (1 - jaro_dist);
+    }
+    return jaro_dist.toFixed(6);
+}
+
+function search(query, resultsNbr = 15) {
+
+    var queryNormalized = normalizeStr(query);
+    const hash = sha1(queryNormalized);
 
     const filteredEntries = keys.filter((key) => archive[key]["questionHash"] === hash);
 
@@ -218,12 +353,11 @@ function search(query, resultsNbr = 10) {
         return Object.fromEntries(filteredEntries.map(key => [key, 1]));
     }
     var dct = {};
+    queryNormalized = normalizeStr(query, true);
     keys.map(key => {
-        var qst = normalizeStr(archive[key]["Question"]);
-        var score = levenshteinRatio(qst, query);
-        if (query.includes(qst) || qst.includes(query)) {
-            score += (1 - score) * 0.3
-        }
+        const qstNormalized = normalizeStr(archive[key]["Question"], true);
+        var score = levenshteinRatio(qst, queryNormalized);
+        score += (1 - score) * jaro_Winkler(qstNormalized, queryNormalized)
         dct[key] = score;
     });
 
