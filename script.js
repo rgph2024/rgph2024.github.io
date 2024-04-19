@@ -326,7 +326,7 @@ function search(query, resultsNbr = 15) {
     queryNormalized = normalizeStr(query, true);
     keys.map(key => {
         const qstNormalized = normalizeStr(archive[key]["Question"], true);
-        var score = levenshteinRatio(qst, queryNormalized);
+        var score = levenshteinRatio(qstNormalized, queryNormalized);
         score += (1 - score) * jaro_Winkler(qstNormalized, queryNormalized)
         dct[key] = score;
     });
