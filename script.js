@@ -39,10 +39,6 @@ function handleAnswerSubmission() {
     }
 }
 
-function breadCrumbItems(quizID) {
-    
-}
-
 function showAnswer() {
     const question = questionInput.value;
     const answer = question;
@@ -63,21 +59,12 @@ function showAnswer() {
         var badge = "Approved" in val ? verified : unverified;
         var options = val["Options"];
         var answers = val["Answer"];
-        var quizID = val["QuizOfOrigin"];
         var choices = '';
         options.forEach(function (option, j) {
             choices += `<div class="question-option rtl" isCorrect="${answers.includes(j + 1)}"> <p class="unselectable">${option}</p>${answers.includes(j + 1) ? correct : wrong} </div>`;
         });
         var accuracyStyle = results[key] > .7 ? ` style="color:#fff;background-color: rgba(85, 207, 15, ${results[key]});"` : '';
-        var sections = [quizID];
-        var breadcrumb = '';
-        sections.forEach((section, i) => {
-            breadcrumb += `<span>${section}</span>`;
-            if (i !== [quizID].length - 1) {
-                breadcrumb += `<span><i class="fa-solid fa-chevron-left"></i></span>`;
-            }
-        });
-        var question = `<div class="multisteps_form text-center"> <div class="quiz-card"><div class="accuracy-background"><div class="search-accuracy" ${accuracyStyle}>${(results[key] * 100).toFixed(1)}% تطابق</div>${(results[key] * 100).toFixed(1)}% تطابق</div> ${badge} <h3 class="question_title text-center unselectable rtl">${qst}</h3> <div class="breadcrumb">${breadcrumb}</div> </div>${choices}</div>`;
+        var question = `<div class="multisteps_form text-center"> <div class="quiz-card"><div class="accuracy-background"><div class="search-accuracy" ${accuracyStyle}>${(results[key] * 100).toFixed(1)}% تطابق</div>${(results[key] * 100).toFixed(1)}% تطابق</div> ${badge} <h3 class="question_title text-center unselectable rtl">${qst}</h3> </div>${choices}</div>`;
         if (i + 1 < lst.length) {
             question += `<div class="separator"> <div class="gradient-divider"></div> </div>`;
         }
@@ -206,23 +193,6 @@ const correct = `<span class="text-success d-flex align-items-center"> <svg stro
 const verified = `<span class="badge"><svg xmlns="http://www.w3.org/2000/svg" height="2em" width="2em" id="Layer_1" data-name="Layer 1" viewBox="0 0 122.88 116.87"><defs><style>.cls-1{fill:#0f5132;fill-rule:evenodd;}.cls-2{fill:#fff;}</style></defs><title>verified-symbol</title><polygon class="cls-1" points="61.37 8.24 80.43 0 90.88 17.79 111.15 22.32 109.15 42.85 122.88 58.43 109.2 73.87 111.15 94.55 91 99 80.43 116.87 61.51 108.62 42.45 116.87 32 99.08 11.73 94.55 13.73 74.01 0 58.43 13.68 42.99 11.73 22.32 31.88 17.87 42.45 0 61.37 8.24 61.37 8.24"/><path class="cls-2" d="M37.92,65c-6.07-6.53,3.25-16.26,10-10.1,2.38,2.17,5.84,5.34,8.24,7.49L74.66,39.66C81.1,33,91.27,42.78,84.91,49.48L61.67,77.2a7.13,7.13,0,0,1-9.9.44C47.83,73.89,42.05,68.5,37.92,65Z"/></svg><span style="margin-right: 5px; color: #0f5132;">أجوبة موثوقة</span></span>`;
 const wrong = `<span class="text-danger d-flex align-items-center"> <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="2.5em" width="2.5em" xmlns="http://www.w3.org/2000/svg"> <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 10.5858L14.8284 7.75736L16.2426 9.17157L13.4142 12L16.2426 14.8284L14.8284 16.2426L12 13.4142L9.17157 16.2426L7.75736 14.8284L10.5858 12L7.75736 9.17157L9.17157 7.75736L12 10.5858Z"> </path> </svg> </span>`;
 const unverified = '<span class="badge"><svg viewBox="0 0 122.88 116.87" xmlns="http://www.w3.org/2000/svg"  height="2.7em" width="2.7em"><g data-name="Layer 2"><path fill="#842029" d="M93.78,47.52l-7-5.4a3.13,3.13,0,0,1-1-3.68l3.38-8.18A3.13,3.13,0,0,0,86.67,26L77.89,24.8a3.12,3.12,0,0,1-2.69-2.69L74,13.33a3.13,3.13,0,0,0-4.3-2.48l-8.18,3.38a3.13,3.13,0,0,1-3.68-1l-5.4-7a3.13,3.13,0,0,0-5,0l-5.4,7a3.13,3.13,0,0,1-3.68,1l-8.18-3.38A3.13,3.13,0,0,0,26,13.33L24.8,22.11a3.12,3.12,0,0,1-2.69,2.69L13.33,26a3.13,3.13,0,0,0-2.48,4.3l3.38,8.18a3.13,3.13,0,0,1-1,3.68l-7,5.4a3.13,3.13,0,0,0,0,5l7,5.4a3.13,3.13,0,0,1,1,3.68l-3.38,8.18A3.13,3.13,0,0,0,13.33,74l8.78,1.16a3.12,3.12,0,0,1,2.69,2.69L26,86.67a3.13,3.13,0,0,0,4.3,2.48l8.18-3.38a3.13,3.13,0,0,1,3.68,1l5.4,7a3.13,3.13,0,0,0,5,0l5.4-7a3.13,3.13,0,0,1,3.68-1l8.18,3.38A3.13,3.13,0,0,0,74,86.67l1.16-8.78a3.12,3.12,0,0,1,2.69-2.69L86.67,74a3.13,3.13,0,0,0,2.48-4.3l-3.38-8.18a3.13,3.13,0,0,1,1-3.68l7-5.4A3.13,3.13,0,0,0,93.78,47.52ZM50,76.7a3.63,3.63,0,1,1,3.62-3.63A3.63,3.63,0,0,1,50,76.7Zm3.62-14.19a3.62,3.62,0,1,1-7.24,0V26.93a3.62,3.62,0,1,1,7.24,0Z"/></g></svg> <span style="margin-right: 5px; color: #842029;">أجوبة غير موثوقة</span></span>';
-
-archive = {
-    "7819351b3638af23abc59ddae3811a3170f1643a": {
-        "Question": "يتم التعرف على حدود القطع بالوسط القروي:",
-        "Options": [
-            "يوم فاتح شتنبر 2024",
-            "خلال يومي 30 و 31 غشت 2024",
-            "بالموازاة مع تقدم عملية إحصاء الأسر والمساكن"
-        ],
-        "Answer": [
-            2
-        ],
-        "QuizOfOrigin": "65d5cfc2d7e6eb49884a5b2c",
-        "Approved": true,
-        "questionHash": "546dc33319170d1af46972984e4ece4c1de415c6"
-    }
-}
 
 if (typeof archive === 'undefined') {
     fetch('dataBase.json')
