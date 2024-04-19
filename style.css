@@ -267,44 +267,41 @@ body {
   text-align: right;
 }
 
-.multisteps_form .question_number {
-  background: #22b39c;
-  border: 1px solid #eee;
-  border-radius: 30px;
-  color: #fff;
-  font-size: 15px;
-  /* margin: -6.5rem auto 2rem; */
-  padding: 5px 10px;
-  position: relative;
-  text-align: center;
-  width: 100px
-}
-
 .search-accuracy {
   font-size: 12px;
   position: absolute;
-  top: 0; /* Move div up by half its height */
-  left: 0; /* Move div left by half its width */
+  top: 0;
+  /* Move div up by half its height */
+  left: 0;
+  /* Move div left by half its width */
   /* Example background color */
   width: auto;
   /* Example width */
   height: auto;
-  border-radius: 10px; /* Rounded corners */
+  border-radius: 10px;
+  /* Rounded corners */
   padding: 3px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Shadow effect */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  /* Shadow effect */
   z-index: 11;
   /* Example height */
-}.accuracy-background {
+}
+
+.accuracy-background {
   font-size: 12px;
   position: absolute;
-  top: 0; /* Move div up by half its height */
-  left: 0; /* Move div left by half its width */
-  transform: translate(-50%, -50%); /* Center the div */
+  top: 0;
+  /* Move div up by half its height */
+  left: 0;
+  /* Move div left by half its width */
+  transform: translate(-50%, -50%);
+  /* Center the div */
   /* Example background color */
   width: auto;
   /* Example width */
   height: auto;
-  border-radius: 10px; /* Rounded corners */
+  border-radius: 10px;
+  /* Rounded corners */
   padding: 3px;
   z-index: 10;
   border: 1px solid hsl(0, 0%, 81%);
@@ -440,13 +437,52 @@ body {
   color: white;
 }
 
+.multisteps_form .question_number {
+  background: #22b39c;
+  border: 1px solid #eee;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 15px;
+  /* margin: -6.5rem auto 2rem; */
+  padding: 5px 10px;
+  position: absolute;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+}
+
 .badge {
   position: absolute;
   font-weight: bold;
   justify-content: center;
   display: flex;
-  top: 1px;
+  top: 5px;
   /* Adjust top margin as needed */
-  right: 1px;
+  left: 2.5px;
   /* Adjust left margin as needed */
+}
+
+.breadcrumb {
+  position: absolute;
+  font-weight: bold;
+  justify-content: center;
+  display: flex;
+  bottom: 3px;
+  /* Adjust top margin as needed */
+  right: 5px;
+  direction: rtl;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.breadcrumb span {
+  margin-left: 2.5px;
+  margin-right: 2.5px;
+  /* Adjust margin for spacing between elements */
+  color: rgba(0, 0, 0, 0.2);
+  /* Transparent text color */
 }

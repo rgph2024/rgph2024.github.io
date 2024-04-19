@@ -59,17 +59,24 @@ function showAnswer() {
         var badge = "Approved" in val ? verified : unverified;
         var options = val["Options"];
         var answers = val["Answer"];
+        var quizID = val["QuizOfOrigin"];
         var choices = '';
         options.forEach(function (option, j) {
             choices += `<div class="question-option rtl" isCorrect="${answers.includes(j + 1)}"> <p class="unselectable">${option}</p>${answers.includes(j + 1) ? correct : wrong} </div>`;
         });
         var accuracyStyle = results[key] > .7 ? ` style="color:#fff;background-color: rgba(85, 207, 15, ${results[key]});"` : '';
-        var question = `<div class="multisteps_form text-center"> <div class="quiz-card"><div class="accuracy-background"><div class="search-accuracy" ${accuracyStyle}>${(results[key] * 100).toFixed(1)}% تطابق</div>${(results[key] * 100).toFixed(1)}% تطابق</div> ${badge} <h3 class="question_title text-center unselectable rtl">${qst}</h3> </div>${choices}</div>`;
+        var breadcrumb = '';
+        var sections = [quizID];
+        sections.forEach((section, i) => {
+            breadcrumb += `<span>${section}</span>`;
+            if (i !== [quizID].length - 1) {
+                breadcrumb += `<span><i class="fa-solid fa-chevron-left"></i></span>`;
+            }
+        });
+        var question = `<div class="multisteps_form text-center"> <div class="quiz-card"><div class="accuracy-background"><div class="search-accuracy" ${accuracyStyle}>${(results[key] * 100).toFixed(1)}% تطابق</div>${(results[key] * 100).toFixed(1)}% تطابق</div> ${badge} <h3 class="question_title text-center unselectable rtl">${qst}</h3> <div class="breadcrumb">${breadcrumb}</div> </div>${choices}</div>`;
         if (i + 1 < lst.length) {
             question += `<div class="separator"> <div class="gradient-divider"></div> </div>`;
         }
-
-
         answerDiv.insertAdjacentHTML('beforeend', question);
     });
 }
