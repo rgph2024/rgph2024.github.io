@@ -76,14 +76,16 @@ function showAnswer() {
         });
         var accuracyStyle = results[key] > .7 ? ` style="color:#fff;background-color: rgba(85, 207, 15, ${results[key]});"` : '';
         var breadcrumb = '';
-        var sections = generateHierarchy(quizID);
-        sections.forEach((section, i) => {
-            breadcrumb += `<span>${section} <i class="fa-regular fa-circle-question" title="${formationParts[quizID][i == 0 ? "course" : i == 1 ? "section" : "title"]["title"]}"></i></span>`;
-            if (i !== sections.length - 1) {
-                breadcrumb += `<span><i class="fa-solid fa-chevron-left"></i></span>`;
-            }
-        });
-        breadcrumb = sections.length > 0 ? `<div class="breadcrumb">${breadcrumb}</div>` : '';
+        if (quizID !== undefined) {
+            var sections = generateHierarchy(quizID);
+            sections.forEach((section, i) => {
+                breadcrumb += `<span>${section} <i class="fa-regular fa-circle-question" title="${formationParts[quizID][i == 0 ? "course" : i == 1 ? "section" : "title"]["title"]}"></i></span>`;
+                if (i !== sections.length - 1) {
+                    breadcrumb += `<span><i class="fa-solid fa-chevron-left"></i></span>`;
+                }
+            });
+            breadcrumb = sections.length > 0 ? `<div class="breadcrumb">${breadcrumb}</div>` : '';
+        }
         var question = `<div class="multisteps_form text-center"> <div class="quiz-card"><div class="accuracy-background"><div class="search-accuracy" ${accuracyStyle}>${(results[key] * 100).toFixed(1)}% تطابق</div>${(results[key] * 100).toFixed(1)}% تطابق</div> ${badge} <h3 class="question_title text-center unselectable rtl">${qst}</h3>${breadcrumb}</div>${choices}</div>`;
 
         if (i + 1 < lst.length) {
