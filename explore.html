@@ -267,6 +267,35 @@
                 color: rgba(0, 0, 0, 0.8);
                 /* Transparent text color */
             }
+
+            /* Style for the tooltip container */
+            .tooltip-container {
+                position: relative;
+                display: inline-block;
+            }
+
+            /* Style for the tooltip */
+            .tooltip-container .tooltip-text {
+                visibility: hidden;
+                background-color: black;
+                color: white;
+                text-align: center;
+                border-radius: 6px;
+                padding: 5px;
+                position: absolute;
+                z-index: 1;
+                bottom: 125%;
+                left: 50%;
+                transform: translateX(-50%);
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+
+            /* Show the tooltip when hovering over the icon */
+            .tooltip-container:hover .tooltip-text {
+                visibility: visible;
+                opacity: 1;
+            }
         </style>
     </head>
 
@@ -344,14 +373,14 @@
                             if (quizID !== undefined) {
                                 var sections = generateHierarchy(quizID);
                                 sections.forEach((section, i) => {
-                                    breadcrumb += `<span>${section} <i class="fa-regular fa-circle-question" title="${formationParts[quizID][i == 0 ? "course" : i == 1 ? "section" : "title"]["title"]}"></i></span>`;
+                                    breadcrumb += `<span class="tooltip-container">${section} <i class="fa-regular fa-circle-question" title="${formationParts[quizID][i == 0 ? "course" : i == 1 ? "section" : "title"]["title"]}"></i></span>`;
                                     if (i !== sections.length - 1) {
                                         breadcrumb += `<span><i class="fa-solid fa-chevron-left"></i></span>`;
                                     }
                                 });
                                 breadcrumb = sections.length > 0 ? `<div class="breadcrumb">${breadcrumb}</div>` : '';
                             }
-                            var question = `<div class="multisteps_form text-center"> ${breadcrumb}<div class="quiz-card"><h3 class="question_title text-center unselectable rtl">${qst}</h3></div>${choices}</div>`;
+                            var question = `<div class="multisteps_form text-center"> ${breadcrumb}<div class="quiz-card">${badge}<span class="question_number unselectable">سؤال ${keys.length - i}</span> <h3 class="question_title text-center unselectable rtl">${qst}</h3> </div>${choices}</div>`;
                             slider.insertAdjacentHTML('beforeend', question);
                         });
 

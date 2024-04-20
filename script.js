@@ -79,7 +79,7 @@ function showAnswer() {
         if (quizID !== undefined) {
             var sections = generateHierarchy(quizID);
             sections.forEach((section, i) => {
-                breadcrumb += `<span>${section} <i class="fa-regular fa-circle-question" title="${formationParts[quizID][i == 0 ? "course" : i == 1 ? "section" : "title"]["title"]}"></i></span>`;
+                breadcrumb += `<span class="tooltip-container">${section} <i class="fa-regular fa-circle-question" title="${formationParts[quizID][i == 0 ? "course" : i == 1 ? "section" : "title"]["title"]}"></i></span>`;
                 if (i !== sections.length - 1) {
                     breadcrumb += `<span><i class="fa-solid fa-chevron-left"></i></span>`;
                 }

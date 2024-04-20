@@ -477,3 +477,32 @@ body {
   color: rgba(0, 0, 0, 0.8);
   /* Transparent text color */
 }
+
+/* Style for the tooltip container */
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* Style for the tooltip */
+.tooltip-container .tooltip-text {
+  visibility: hidden;
+  background-color: black;
+  color: white;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Show the tooltip when hovering over the icon */
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
