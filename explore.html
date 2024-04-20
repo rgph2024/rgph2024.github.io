@@ -264,7 +264,7 @@
                 margin-left: 2.5px;
                 margin-right: 2.5px;
                 /* Adjust margin for spacing between elements */
-                color: rgba(0, 0, 0, 0.2);
+                color: rgba(0, 0, 0, 0.8);
                 /* Transparent text color */
             }
         </style>
@@ -311,7 +311,7 @@
 
                 function generateHierarchy(quizID) {
                     var retVal = [];
-                    var order = { "feminin": { "1": 'الأولى', "2": 'الثانية', "3": 'الثالتة' }, "masculin": { "1": 'الأول', "2": 'الثاني', "3": 'الثالت' } };
+                    var order = { "feminin": { "1": 'الأولى', "2": 'الثانية', "3": 'الثالتة' }, "masculin": { "1": 'الأول', "2": 'الثاني', "3": 'الثالت', "4": 'الرابع', "5": 'الخامس' } };
                     retVal.push(`الوحدة ${order["feminin"][formationParts[quizID]["course"]["order"].toString()]}`);
                     retVal.push(`الفصل ${order["masculin"][formationParts[quizID]["section"]["order"].toString()]}`);
                     retVal.push(`الإختبار ${order["masculin"][formationParts[quizID]["title"]["order"].toString()]}`);
