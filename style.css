@@ -463,12 +463,11 @@ body {
   font-weight: bold;
   justify-content: center;
   display: flex;
-  bottom: 3px;
-  /* Adjust top margin as needed */
-  right: 5px;
   direction: rtl;
-  align-items: center;
+  align-items: right;
   flex-wrap: wrap;
+  margin: 2rem 7.5% 2rem 7.5%;
+  padding: 40px 20px 20px 20px;
 }
 
 .breadcrumb span {

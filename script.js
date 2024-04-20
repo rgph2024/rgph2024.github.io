@@ -86,7 +86,7 @@ function showAnswer() {
             });
             breadcrumb = sections.length > 0 ? `<div class="breadcrumb">${breadcrumb}</div>` : '';
         }
-        var question = `<div class="multisteps_form text-center"> <div class="quiz-card"><div class="accuracy-background"><div class="search-accuracy" ${accuracyStyle}>${(results[key] * 100).toFixed(1)}% تطابق</div>${(results[key] * 100).toFixed(1)}% تطابق</div> ${badge} <h3 class="question_title text-center unselectable rtl">${qst}</h3>${breadcrumb}</div>${choices}</div>`;
+        var question = `${breadcrumb}<div class="multisteps_form text-center"> <div class="quiz-card"><div class="accuracy-background"><div class="search-accuracy" ${accuracyStyle}>${(results[key] * 100).toFixed(1)}% تطابق</div>${(results[key] * 100).toFixed(1)}% تطابق</div> ${badge} <h3 class="question_title text-center unselectable rtl">${qst}</h3></div>${choices}</div>`;
 
         if (i + 1 < lst.length) {
             question += `<div class="separator"> <div class="gradient-divider"></div> </div>`;
