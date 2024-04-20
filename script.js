@@ -86,7 +86,7 @@ function showAnswer() {
             });
             breadcrumb = sections.length > 0 ? `<div class="breadcrumb">${breadcrumb}</div>` : '';
         }
-        var question = `${breadcrumb}<div class="multisteps_form text-center"> <div class="quiz-card"><div class="accuracy-background"><div class="search-accuracy" ${accuracyStyle}>${(results[key] * 100).toFixed(1)}% تطابق</div>${(results[key] * 100).toFixed(1)}% تطابق</div> ${badge} <h3 class="question_title text-center unselectable rtl">${qst}</h3></div>${choices}</div>`;
+        var question = `<div class="multisteps_form text-center"> ${breadcrumb}<div class="quiz-card"><div class="accuracy-background"><div class="search-accuracy" ${accuracyStyle}>${(results[key] * 100).toFixed(1)}% تطابق</div>${(results[key] * 100).toFixed(1)}% تطابق</div> ${badge} <h3 class="question_title text-center unselectable rtl">${qst}</h3></div>${choices}</div>`;
 
         if (i + 1 < lst.length) {
             question += `<div class="separator"> <div class="gradient-divider"></div> </div>`;
@@ -124,9 +124,9 @@ document.addEventListener('keydown', function (e) {
     }
 });
 
-exploreButton.addEventListener('click', function () {
-    showOverlay(exploreContent);
-});
+// exploreButton.addEventListener('click', function () {
+//     showOverlay(exploreContent);
+// });
 
 aboutButton.addEventListener('click', function () {
     showOverlay(aboutContent);
@@ -142,7 +142,7 @@ function showOverlay(content) {
     overlay.classList.add('active'); // Add the active class to start transition
 
     // Hide all content initially
-    exploreContent.style.display = 'none';
+    // exploreContent.style.display = 'none';
     aboutContent.style.display = 'none';
 
     // Show the corresponding content
@@ -153,7 +153,7 @@ function hideOverlay() {
     overlay.classList.remove('active');
     setTimeout(() => {
         overlay.style.display = 'none';
-        exploreContent.style.display = 'none'; // Hide the content
+        // exploreContent.style.display = 'none'; // Hide the content
         aboutContent.style.display = 'none'; // Hide the content
     }, 500); // Adjust this time to match the CSS transition duration
 }
