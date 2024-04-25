@@ -14,7 +14,7 @@ formationParts = { "65d4dae5742d1f4e127f6e6c": { "course": { "title": "منهج�
 
 function generateHierarchy(quizID) {
     var retVal = [];
-    var order = { "feminin": { "1": 'الأولى', "2": 'الثانية', "3": 'الثالتة' }, "masculin": { "1": 'الأول', "2": 'الثاني', "3": 'الثالت' , "4": 'الرابع' , "5": 'الخامس' } };
+    var order = { "feminin": { "1": 'الأولى', "2": 'الثانية', "3": 'الثالثة' }, "masculin": { "1": 'الأول', "2": 'الثاني', "3": 'الثالث' , "4": 'الرابع' , "5": 'الخامس' } };
     retVal.push(`الوحدة ${order["feminin"][formationParts[quizID]["course"]["order"].toString()]}`);
     retVal.push(`الفصل ${order["masculin"][formationParts[quizID]["section"]["order"].toString()]}`);
     retVal.push(`الإختبار ${order["masculin"][formationParts[quizID]["title"]["order"].toString()]}`);
