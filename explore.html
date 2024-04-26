@@ -355,7 +355,7 @@
                     .then(response => response.json())
                     .then(data => {
                         const archive = data;
-                        const keys = Object.keys(archive);
+                        const keys = Object.keys(archive).reverse();
 
                         keys.forEach(function (key, i) {
                             var val = archive[key];
