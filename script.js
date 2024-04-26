@@ -221,7 +221,7 @@ if (typeof archive === 'undefined') {
         .then(data => {
             // Do something with the loaded JSON data
             archive = data;
-            keys = shuffleArray(Object.keys(archive));
+            keys = Object.keys(archive);
             keys.forEach(key => {
                 archive[key]["questionHash"] = sha1(normalizeStr(archive[key]["Question"]));
             });
