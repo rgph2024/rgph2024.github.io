@@ -356,7 +356,7 @@ function search(query, resultsNbr = 15) {
 
         for (const normalizedOption of optionsNormalized) {
             if (normalizedOption.includes(queryNormalized)) {
-                score += (1 - score) * 0.1;
+                score += (1 - score) * 0.75;
             }
         }
         dct[key] = score;
