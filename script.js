@@ -352,7 +352,7 @@ function search(query, resultsNbr = 15) {
         const optionsNormalized = options.map(option => normalizeStr(option, true));
 
         let score = 0;
-        score += levenshteinRatio(qstNormalized, queryNormalized) * jaro_Winkler(qstNormalized, queryNormalized);
+        score += (1 - levenshteinRatio(qstNormalized, queryNormalized)) * jaro_Winkler(qstNormalized, queryNormalized);
 
         for (const normalizedOption of optionsNormalized) {
             if (normalizedOption.includes(queryNormalized)) {
