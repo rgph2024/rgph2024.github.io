@@ -366,3 +366,39 @@ function search(query, resultsNbr = 15) {
 
     return Object.fromEntries(Object.entries(dct).sort((a, b) => b[1] - a[1]));
 }
+
+function search(query, resultsNbr = 15) {
+    var queryNormalized = normalizeStr(query);
+    const hash = sha1(queryNormalized);
+
+    const filteredEntries = keys.filter((key) => archive[key]["questionHash"] === hash);
+
+    if (filteredEntries.length !== 0) {
+        return Object.fromEntries(filteredEntries.map(key => [key, 1]));
+    }
+
+    var dct = {};
+    queryNormalized = normalizeStr(query, true);
+    const queryWords = queryNormalized.split(/\s+/);
+
+    keys.map(key => {
+        const qstNormalized = normalizeStr(archive[key]["Question"], true);
+        const options = archive[key]["Options"];
+        const optionsNormalized = [qstNormalized, ...options.map(option => normalizeStr(option, true))];
+
+        let score = 0;
+        score += (1 - levenshteinRatio(qstNormalized, queryNormalized)) * jaro_Winkler(qstNormalized, queryNormalized);
+
+        for (const normalizedOption of optionsNormalized) {
+            let n = 0;
+            for (const queryWord of queryWords) {
+                const regex = new RegExp(queryWord, 'g');
+                const matches = normalizedOption.match(regex);
+                n += matches ? matches.length : 0;
+            }
+            score += (1 - score) * Math.pow(0.1, n);
+        }
+        dct[key] = score;
+    });
+    return Object.fromEntries(Object.entries(dct).sort((a, b) => b[1] - a[1]));
+}
