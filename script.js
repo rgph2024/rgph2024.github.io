@@ -353,10 +353,12 @@ function search(query, resultsNbr = 15) {
 
         let score = 0;
         score += (1 - levenshteinRatio(qstNormalized, queryNormalized)) * jaro_Winkler(qstNormalized, queryNormalized);
-
+        if (qstNormalized.includes(queryNormalized)) {
+            score += (1 - score) * 0.5;
+        }
         for (const normalizedOption of optionsNormalized) {
             if (normalizedOption.includes(queryNormalized)) {
-                score += (1 - score) * 0.75;
+                score += (1 - score) * 0.1;
             }
         }
         dct[key] = score;
