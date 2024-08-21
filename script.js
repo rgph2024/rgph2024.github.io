@@ -14,7 +14,7 @@ formationParts = { "65d4dae5742d1f4e127f6e6c": { "course": { "title": "منهج�
 
 function generateHierarchy(quizID) {
     var retVal = [];
-    var order = { "feminin": { "1": 'الأولى', "2": 'الثانية', "3": 'الثالثة' }, "masculin": { "1": 'الأول', "2": 'الثاني', "3": 'الثالث' , "4": 'الرابع' , "5": 'الخامس' } };
+    var order = { "feminin": { "1": 'الأولى', "2": 'الثانية', "3": 'الثالثة' }, "masculin": { "1": 'الأول', "2": 'الثاني', "3": 'الثالث', "4": 'الرابع', "5": 'الخامس' } };
     retVal.push(`الوحدة ${order["feminin"][formationParts[quizID]["course"]["order"].toString()]}`);
     retVal.push(`الفصل ${order["masculin"][formationParts[quizID]["section"]["order"].toString()]}`);
     retVal.push(`الإختبار ${order["masculin"][formationParts[quizID]["title"]["order"].toString()]}`);
@@ -334,7 +334,6 @@ function jaro_Winkler(s1, s2) {
 }
 
 function search(query, resultsNbr = 15) {
-
     var queryNormalized = normalizeStr(query);
     const hash = sha1(queryNormalized);
 
@@ -343,14 +342,25 @@ function search(query, resultsNbr = 15) {
     if (filteredEntries.length !== 0) {
         return Object.fromEntries(filteredEntries.map(key => [key, 1]));
     }
+
     var dct = {};
     queryNormalized = normalizeStr(query, true);
+
     keys.map(key => {
         const qstNormalized = normalizeStr(archive[key]["Question"], true);
-        var score = levenshteinRatio(qstNormalized, queryNormalized);
-        score += (1 - score) * jaro_Winkler(qstNormalized, queryNormalized)
+        const options = archive[key]["Options"];
+        const optionsNormalized = options.map(option => normalizeStr(option, true));
+
+        let score = 0;
+        score += levenshteinRatio(qstNormalized, queryNormalized) * jaro_Winkler(qstNormalized, queryNormalized);
+
+        for (const normalizedOption of optionsNormalized) {
+            if (normalizedOption.includes(queryNormalized)) {
+                score += (1 - score) * 0.1;
+            }
+        }
         dct[key] = score;
     });
 
-    return Object.fromEntries(Object.entries(dct).sort((a, b) => b[1] - a[1]).slice(0, resultsNbr));
+    return Object.fromEntries(Object.entries(dct).sort((a, b) => b[1] - a[1]));
 }
