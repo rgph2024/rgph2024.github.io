@@ -358,12 +358,9 @@ function search(query, resultsNbr = 15) {
             score += (1 - score) * 0.5;
         }
         for (const normalizedOption of optionsNormalized) {
-            let n = 1;
-            let percent = Math.pow(0.1, n);
             for (const queryWord of queryWords) {
                 if (normalizedOption.includes(queryWord)) {
-                    score += (1 - score) * percent;
-                    n++;
+                    score += (1 - score) * 0.2;
                 }
             }
         }
